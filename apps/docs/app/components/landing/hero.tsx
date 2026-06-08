@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/dist/client/components/navigation";
 import Image from "next/image";
 import { AtsDrawer } from "../resume/ats-drawer";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { AuthModal } from "../auth/auth-modal";
 import { api } from "@/app/config/api-detail";
 
@@ -11,6 +11,7 @@ export function Hero() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [jobId, setJobId] = useState<string | null>(null);
   const [authModalOpen, setAuthModalOpen] = useState(false);
+  const router = useRouter();
 
   const handleUpload = async () => {
     const token = localStorage.getItem("token");
@@ -30,7 +31,7 @@ export function Hero() {
 
       const formData = new FormData();
       formData.append("resume", file);
-      formData.append("userId", userId);
+      formData.append("userId", userId!);
 
       const res = await fetch(`${api}/resume/upload`, {
         method: "POST",

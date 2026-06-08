@@ -59,7 +59,7 @@ export function Navbar() {
 
       const formData = new FormData();
       formData.append("resume", file);
-      formData.append("userId", userId);
+      formData.append("userId", userId!);
 
       try {
         const res = await fetch(`${api}/resume/upload`, {
