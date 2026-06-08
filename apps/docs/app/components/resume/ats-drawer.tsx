@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { X } from "lucide-react";
+import { api } from "@/app/config/api-detail";
 
 interface Props {
   jobId: string | null;
@@ -19,7 +20,7 @@ export function AtsDrawer({ jobId, open, onClose }: Props) {
     const interval = setInterval(async () => {
       setStatus("uploading");
 
-      const res = await fetch(`http://localhost:5000/api/resume/${jobId}`);
+      const res = await fetch(`${api}/resume/${jobId}`);
 
       const json = await res.json();
 

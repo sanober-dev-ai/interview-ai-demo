@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { api } from "@/app/config/api-detail";
 
 /* ---------------- KPI CARD ---------------- */
 const StatCard = ({
@@ -34,7 +35,7 @@ export default function Dashboard() {
         const userId =
           localStorage.getItem("userId") || "m6a22a0a9b71e857c90b86143";
 
-        const res = await fetch(`http://localhost:5000/api/auth/${userId}`);
+        const res = await fetch(`${api}/auth/${userId}`);
 
         const data = await res.json();
 

@@ -3,6 +3,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SignInFormValues, signinSchema } from "./auth-schema";
+import { api } from "@/app/config/api-detail";
 
 export function SignInForm({ onSwitch }: { onSwitch: () => void }) {
   const {
@@ -15,7 +16,7 @@ export function SignInForm({ onSwitch }: { onSwitch: () => void }) {
 
   const onSubmit = async (data: SignInFormValues) => {
     console.log("SIGN IN:", data);
-    const res = await fetch(`http://localhost:5000/api/auth/login`, {
+    const res = await fetch(`${api}/auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -5,6 +5,7 @@ import { Menu, Search, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { AuthModal } from "../auth/auth-modal";
 import { useRouter } from "next/dist/client/components/navigation";
+import { api } from "@/app/config/api-detail";
 
 export function Navbar() {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -61,7 +62,7 @@ export function Navbar() {
       formData.append("userId", userId);
 
       try {
-        const res = await fetch("http://localhost:5000/api/resume/upload", {
+        const res = await fetch(`${api}/resume/upload`, {
           method: "POST",
           body: formData,
         });
