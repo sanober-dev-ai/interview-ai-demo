@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 
-import User from "../models/User";
-
+import User from "/home/sanobery/interview-ai-pro/packages/shared/models/User.ts";
+import Resume from "/home/sanobery/interview-ai-pro/packages/shared/models/Resume.ts";
 import bcrypt from "bcryptjs";
 
 import { generateToken } from "../utils/jwt";
@@ -58,4 +58,14 @@ export const login = async (req: Request, res: Response) => {
     token,
     user,
   });
+};
+
+export const getUserResumes = async (req, res) => {
+  const { userId } = req.params;
+
+  const resumes = await Resume.find()
+    .sort({ createdAt: -1 })
+    .select("atsScore status createdAt filePath");
+
+  return res.json(resumes);
 };
