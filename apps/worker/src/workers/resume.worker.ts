@@ -86,49 +86,49 @@ Resume:
 ${parsed.text}
 `;
 
-      const response = await ai.models.generateContent({
-        model: "models/gemini-2.5-flash",
-        contents: prompt,
-      });
+      // const response = await ai.models.generateContent({
+      //   model: "models/gemini-2.5-flash",
+      //   contents: prompt,
+      // });
 
-      const text = response.text;
+      // const text = response.text;
 
-      if (!text) {
-        throw new Error("Empty Gemini response");
-      }
+      // if (!text) {
+      //   throw new Error("Empty Gemini response");
+      // }
 
-      const analysis = JSON.parse(
-        text
-          .replace(/```json/g, "")
-          .replace(/```/g, "")
-          .trim(),
-      );
+      // const analysis = JSON.parse(
+      //   text
+      //     .replace(/```json/g, "")
+      //     .replace(/```/g, "")
+      //     .trim(),
+      // );
 
       // console.log(analysis);
-      // const analysis = {
-      //   atsScore: 82,
-      //   strengths: ["React", "Node.js", "TypeScript"],
-      //   weaknesses: ["Testing", "CI/CD"],
-      //   suggestions: [
-      //     "Add testing projects",
-      //     "Include measurable achievements",
-      //   ],
-      //   profile: {
-      //     name: "John Doe",
-      //     email: "john@example.com",
-      //     phone: "+91xxxxxxxxxx",
-      //     skills: ["React", "Node.js", "MongoDB", "TypeScript"],
-      //     education: [
-      //       {
-      //         degree: "B.Tech Computer Science",
-      //         college: "XYZ University",
-      //         year: "2023",
-      //       },
-      //     ],
-      //     experience: [],
-      //     projects: [],
-      //   },
-      // };
+      const analysis = {
+        atsScore: 82,
+        strengths: ["React", "Node.js", "TypeScript"],
+        weaknesses: ["Testing", "CI/CD"],
+        suggestions: [
+          "Add testing projects",
+          "Include measurable achievements",
+        ],
+        profile: {
+          name: "John Doe",
+          email: "john@example.com",
+          phone: "+91xxxxxxxxxx",
+          skills: ["React", "Node.js", "MongoDB", "TypeScript"],
+          education: [
+            {
+              degree: "B.Tech Computer Science",
+              college: "XYZ University",
+              year: "2023",
+            },
+          ],
+          experience: [],
+          projects: [],
+        },
+      };
 
       resume.atsScore = analysis.atsScore ?? 0;
       resume.strengths = analysis.strengths ?? [];

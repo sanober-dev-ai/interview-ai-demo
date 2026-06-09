@@ -78,7 +78,7 @@ export function Navbar() {
 
         setJobId(data.resume._id);
 
-        router.push("/dashboard");
+        router.push(`/ats-score/${data.resume._id}`);
       } catch (error) {
         console.error("Upload error:", error);
         alert("Something went wrong");

@@ -2,13 +2,11 @@
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/dist/client/components/navigation";
 import Image from "next/image";
-import { AtsDrawer } from "../resume/ats-drawer";
 import { useState } from "react";
 import { AuthModal } from "../auth/auth-modal";
 import { api } from "@/app/config/api-detail";
 
 export function Hero() {
-  const [drawerOpen, setDrawerOpen] = useState(false);
   const [jobId, setJobId] = useState<string | null>(null);
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const router = useRouter();
@@ -39,10 +37,8 @@ export function Hero() {
       });
 
       const data = await res.json(); // { jobId }
-      console.log("Upload Response:", data.resume._id);
       setJobId(data.resume._id);
-      // setDrawerOpen(true);
-      router.push(`/dashboard`);
+      router.push(`/ats-score/${data.resume._id}`);
     };
 
     input.click();
@@ -135,11 +131,6 @@ export function Hero() {
           </div>
         </div>
       </section>
-      <AtsDrawer
-        jobId={jobId}
-        open={drawerOpen}
-        onClose={() => setDrawerOpen(false)}
-      />
       <AuthModal open={authModalOpen} onClose={() => setAuthModalOpen(false)} />
     </>
   );

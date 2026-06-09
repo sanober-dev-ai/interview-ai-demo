@@ -35,11 +35,35 @@ export default function Dashboard() {
         const userId =
           localStorage.getItem("userId") || "m6a22a0a9b71e857c90b86143";
 
+        // Fetch user's resumes
         const res = await fetch(`${api}/auth/${userId}`);
+        const resumeList = await res.json();
 
-        const data = await res.json();
+        // Fetch ATS details for each resume
+        const enrichedResumes = await Promise.all(
+          (resumeList || []).map(async (resume: any) => {
+            try {
+              const atsRes = await fetch(`${api}/resume/${resume._id}`);
 
-        setResumes(data || []);
+              const atsData = await atsRes.json();
+
+              return {
+                ...resume,
+                atsScore: atsData?.result?.atsScore || 0,
+                status: atsData?.status || resume.status || "processed",
+              };
+            } catch (error) {
+              console.error(`Failed ATS fetch for ${resume._id}`, error);
+
+              return {
+                ...resume,
+                atsScore: 0,
+              };
+            }
+          }),
+        );
+
+        setResumes(enrichedResumes);
       } catch (err) {
         console.error("Error fetching resumes:", err);
       } finally {
@@ -51,6 +75,7 @@ export default function Dashboard() {
   }, []);
 
   /* ---------------- ANALYTICS ---------------- */
+
   const totalResumes = resumes.length;
 
   const highestATS = resumes.reduce((max, r) => {
@@ -66,7 +91,7 @@ export default function Dashboard() {
       {/* HEADER */}
       <div>
         <h1 className="text-2xl font-semibold">Dashboard</h1>
-        <button></button>
+
         <p className="text-white/50 text-sm mt-1">
           Overview of your resume analytics and performance
         </p>
@@ -79,11 +104,13 @@ export default function Dashboard() {
           value={totalResumes}
           sub="All uploaded resumes"
         />
+
         <StatCard
           title="Highest ATS Score"
           value={`${highestATS}%`}
           sub="Best performing resume"
         />
+
         <StatCard
           title="Average ATS Score"
           value={`${avgATS.toFixed(1)}%`}
@@ -119,7 +146,7 @@ export default function Dashboard() {
 
       {/* TABLE */}
       <div className="rounded-2xl border border-white/10 overflow-hidden">
-        {/* Table Header */}
+        {/* HEADER */}
         <div className="grid grid-cols-4 p-4 text-sm text-white/50 border-b border-white/10">
           <span>Resume</span>
           <span>ATS Score</span>
@@ -127,7 +154,7 @@ export default function Dashboard() {
           <span>Action</span>
         </div>
 
-        {/* Table Body */}
+        {/* BODY */}
         {loading ? (
           <div className="p-6 space-y-3">
             {[1, 2, 3].map((i) => (
@@ -148,14 +175,25 @@ export default function Dashboard() {
               className="grid grid-cols-4 p-4 text-sm border-b border-white/5 hover:bg-white/5 transition"
             >
               <span className="truncate">
-                {r.filePath?.split("/").pop() || "Resume"}
+                {r.filePath?.split("/").pop() || r.fileName || "Resume"}
               </span>
 
-              <span className="text-green-400 font-medium">
-                {r.atsScore || 0}%
-              </span>
+              <div>
+                <span className="text-green-400 font-medium">
+                  {r.atsScore}%
+                </span>
 
-              <span className="text-yellow-400">{r.status || "processed"}</span>
+                <div className="w-full h-2 bg-white/10 rounded-full mt-1">
+                  <div
+                    className="h-2 bg-green-500 rounded-full"
+                    style={{
+                      width: `${r.atsScore}%`,
+                    }}
+                  />
+                </div>
+              </div>
+
+              <span className="text-yellow-400">{r.status}</span>
 
               <Link
                 href={`/dashboard/resume/${r._id}`}

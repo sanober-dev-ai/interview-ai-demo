@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 
 const items = [
+  { title: "ATS-Score", href: "/ats-score", icon: LayoutDashboard },
   { title: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { title: "Resumes", href: "/resumes", icon: FileText },
   { title: "Interviews", href: "/interviews", icon: MessageSquare },

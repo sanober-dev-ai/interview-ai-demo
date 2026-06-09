@@ -20,7 +20,6 @@ export default function HomePage() {
   return (
     <>
       <Navbar />
-      <Navbar />
       <Hero />
       <Features />
       <CTASection />
